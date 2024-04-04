@@ -24,14 +24,7 @@ class LamportSignature:
 
     @staticmethod
     def scatter_key(key):
-        match len(key):
-            case 8192:
-                return [key[i:i + 32] for i in range(0, 8192, 32)]
-
-            case 16384:
-                return [(key[i:i + 32], key[i + 32:i + 64]) for i in range(0, 16384, 64)]
-
-        raise ValueError('Dimensiunea invalida pentru cheie.')
+        return [(key[i:i + 32], key[i + 32:i + 64]) for i in range(0, 16384, 64)]
 
     def get_key(self, is_public):
         key = self.public_key if is_public else self.private_key
