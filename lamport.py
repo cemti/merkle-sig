@@ -16,10 +16,10 @@ class LamportSignature:
     @staticmethod
     def gather_keys(key_list):
         ret = bytearray(0)
-        
+
         for a, b in key_list:
             ret += a + b
-                
+
         return ret
 
     @staticmethod
@@ -31,7 +31,7 @@ class LamportSignature:
         return self.gather_keys(key)
 
     def sign(self, msg):
-        msg_hash_bin = f'{int(self.hash(msg).hex(), 16):b}'        
+        msg_hash_bin = f'{int(self.hash(msg).hex(), 16):b}'
         return [a if bit == '0' else b for (a, b), bit in zip(self.private_key, msg_hash_bin)]
 
     @classmethod
@@ -39,11 +39,11 @@ class LamportSignature:
         public_key = cls.scatter_key(public_key)
         msg_hash_bin = f'{int(cls.hash(msg).hex(), 16):b}'
         signature_hashes = [cls.hash(i) for i in signature]
-        
+
         for sig_hash, (a, b), bit in zip(signature_hashes, public_key, msg_hash_bin):
             if (bit == '0' and sig_hash != a) or (bit == '1' and sig_hash != b):
                 return False
-            
+
         return True
 
     @staticmethod
